@@ -1,6 +1,6 @@
 # AI-Powered Document Assistant (RAG)
 
-A chatbot that lets you upload a PDF and ask natural-language questions about it. It answers using the actual content of your document instead of guessing — this is what "Retrieval-Augmented Generation" (RAG) means.
+A chatbot that lets you upload a PDF and ask natural-language questions about it. It answers using the actual content of your document instead of guessing, this is what "Retrieval-Augmented Generation" (RAG) means.
 
 **Tech Stack:** Python · LangChain · ChromaDB · Gemini API · Streamlit
 
