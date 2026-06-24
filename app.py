@@ -14,6 +14,7 @@ Run this with:  streamlit run app.py
 import os
 import tempfile
 import streamlit as st
+
 from dotenv import load_dotenv
 
 import rag_engine
@@ -42,11 +43,8 @@ if "doc_processed" not in st.session_state:
 with st.sidebar:
     st.header("Setup")
 
-    api_key = os.getenv("GOOGLE_API_KEY", "")
-    if not api_key:
-        api_key = st.text_input("Google (Gemini) API Key", type="password")
-        if api_key:
-            os.environ["GOOGLE_API_KEY"] = api_key
+    api_key = st.secrets["GOOGLE_API_KEY"]
+    os.environ["GOOGLE_API_KEY"] = api_key
 
     st.divider()
 
