@@ -8,7 +8,7 @@ A chatbot that lets you upload a PDF and ask natural-language questions about it
 
 ## 1. How it works (the concept)
 
-A plain LLM only knows what it was trained on — it has never seen your PDF. RAG fixes that by giving the model a "open book exam" instead of a "closed book exam":
+A plain LLM only knows what it was trained on, it has never seen your PDF. RAG fixes that by giving the model a "open book exam" instead of a "closed book exam":
 
 ```
  PDF Upload
@@ -74,7 +74,7 @@ Logic is separated from UI on purpose: `rag_engine.py` has zero Streamlit code i
 
 4. **Get a free Gemini API key:**
    - Go to https://aistudio.google.com/apikey
-   - Sign in with a Google account and click "Create API key" — no payment info required.
+   - Sign in with a Google account and click "Create API key" no payment info required.
 
 5. **Add your key.** Copy `.env.example` to a new file named `.env` and paste your key in:
    ```
@@ -93,7 +93,7 @@ Logic is separated from UI on purpose: `rag_engine.py` has zero Streamlit code i
 
 | Resume bullet | Where it lives in the code |
 |---|---|
-| "Built a RAG application enabling users to upload PDF documents and ask natural-language questions" | `app.py` — file uploader + chat input |
+| "Built a RAG application enabling users to upload PDF documents and ask natural-language questions" | `app.py` file uploader + chat input |
 | "Implemented document chunking, embeddings, and semantic search using LangChain and ChromaDB" | `rag_engine.py` — `chunk_text()`, `build_vectorstore()` |
 | "Integrated Gemini API to generate context-aware answers" | `rag_engine.py` — `get_llm()`, `build_rag_chain()` |
 | "Developed a conversational interface" | `app.py` — `st.chat_message` / `st.chat_input` + `st.session_state.messages` |
