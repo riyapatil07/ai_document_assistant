@@ -39,16 +39,36 @@ if "doc_processed" not in st.session_state:
 # -----------------------------------------------------------------
 # Sidebar: API key + PDF upload
 # -----------------------------------------------------------------
+# with st.sidebar:
+#     st.header("Setup")
+
+#     api_key = os.getenv("GOOGLE_API_KEY", "")
+#     if not api_key:
+#         api_key = st.text_input("Google (Gemini) API Key", type="password")
+#         if api_key:
+#             os.environ["GOOGLE_API_KEY"] = api_key
+
+#     st.divider()
+
+#     uploaded_file = st.file_uploader("Upload a PDF", type=["pdf"])
+
+#     process_clicked = st.button(
+#         "Process Document",
+#         disabled=not (uploaded_file and os.getenv("GOOGLE_API_KEY")),
+#         use_container_width=True,
+#     )
+
+#     if not os.getenv("GOOGLE_API_KEY"):
+#         st.info("Enter your free Gemini API key to get started. "
+#                 "Get one at aistudio.google.com/apikey")
+
+# Pull the key from Streamlit secrets (set on Streamlit Cloud dashboard)
+# so visitors never have to provide their own.
+if "GOOGLE_API_KEY" in st.secrets:
+    os.environ["GOOGLE_API_KEY"] = st.secrets["GOOGLE_API_KEY"]
+
 with st.sidebar:
-    st.header("Setup")
-
-    api_key = os.getenv("GOOGLE_API_KEY", "")
-    if not api_key:
-        api_key = st.text_input("Google (Gemini) API Key", type="password")
-        if api_key:
-            os.environ["GOOGLE_API_KEY"] = api_key
-
-    st.divider()
+    st.header("Upload your document")
 
     uploaded_file = st.file_uploader("Upload a PDF", type=["pdf"])
 
@@ -59,8 +79,7 @@ with st.sidebar:
     )
 
     if not os.getenv("GOOGLE_API_KEY"):
-        st.info("Enter your free Gemini API key to get started. "
-                "Get one at aistudio.google.com/apikey")
+        st.error("The app owner hasn't configured an API key yet.")
 
 # -----------------------------------------------------------------
 # Process the uploaded PDF into a vector store + RAG chain
