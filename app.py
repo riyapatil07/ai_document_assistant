@@ -14,6 +14,7 @@ Run this with:  streamlit run app.py
 import os
 import tempfile
 import streamlit as st
+
 from dotenv import load_dotenv
 
 import rag_engine
