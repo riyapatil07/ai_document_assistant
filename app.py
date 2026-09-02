@@ -12,7 +12,7 @@ load_dotenv()  # loads GOOGLE_API_KEY from a local .env file, if present
 
 st.set_page_config(page_title="AI Document Assistant", page_icon="📄")
 st.title("AI-Powered Document Assistant")
-st.caption("Upload a PDF and ask questions about it — powered by RAG (LangChain + ChromaDB + Gemini)")
+st.caption("Upload a PDF and ask questions about it- powered by RAG (LangChain + ChromaDB + Gemini)")
 
 # -----------------------------------------------------------------
 # Session state: things that need to survive between re-runs
