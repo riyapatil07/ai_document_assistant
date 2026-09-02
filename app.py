@@ -1,15 +1,4 @@
-"""
-app.py
--------
-This is the Streamlit web interface. Streamlit turns a plain Python
-script into a web app -- every time the user interacts with something
-(uploads a file, types a message), this whole script re-runs from top
-to bottom, and Streamlit only redraws what changed. That's why we use
-`st.session_state` to remember things (like the vector store and chat
-history) between those re-runs.
 
-Run this with:  streamlit run app.py
-"""
 
 import os
 import tempfile
@@ -22,7 +11,7 @@ import rag_engine
 load_dotenv()  # loads GOOGLE_API_KEY from a local .env file, if present
 
 st.set_page_config(page_title="AI Document Assistant", page_icon="📄")
-st.title("📄 AI-Powered Document Assistant")
+st.title("AI-Powered Document Assistant")
 st.caption("Upload a PDF and ask questions about it — powered by RAG (LangChain + ChromaDB + Gemini)")
 
 # -----------------------------------------------------------------
