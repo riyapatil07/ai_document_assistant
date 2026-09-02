@@ -16,10 +16,7 @@ from langchain_core.runnables import RunnablePassthrough
 # STEP 1: Extract raw text from the uploaded PDF
 # ---------------------------------------------------------------------
 def extract_text_from_pdf(uploaded_file):
-    """
-    Takes a file-like object (what Streamlit's file_uploader gives us)
-    and returns the full text of the PDF, page by page.
-    """
+    
     reader = PdfReader(uploaded_file)
     pages_text = []
     for page_number, page in enumerate(reader.pages):
@@ -32,15 +29,7 @@ def extract_text_from_pdf(uploaded_file):
 # STEP 2: Split the text into chunks
 # ---------------------------------------------------------------------
 def chunk_text(pages_text, chunk_size=1000, chunk_overlap=150):
-    """
-    LLMs and embedding models work much better on small chunks of text
-    than on a whole document at once. We use a 1000-character chunk size
-    with a 150-character overlap so we don't accidentally cut a sentence
-    (and its meaning) in half between two chunks.
-
-    Returns a list of LangChain Document objects, which is the standard
-    object LangChain uses to represent "a piece of text + metadata".
-    """
+    
     splitter = RecursiveCharacterTextSplitter(
         chunk_size=chunk_size,
         chunk_overlap=chunk_overlap,
