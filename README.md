@@ -20,7 +20,7 @@ A plain LLM only knows what it was trained on, it has never seen your PDF. RAG f
  2. Split text into small overlapping chunks
      │
      ▼
- 3. Convert each chunk into a vector (embedding) — a list of numbers
+ 3. Convert each chunk into a vector (embedding) a list of numbers
     that represents its MEANING, using Gemini's embedding model
      │
      ▼
