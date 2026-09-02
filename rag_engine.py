@@ -1,25 +1,4 @@
-"""
-rag_engine.py
---------------
-This file contains all the "brain" logic of the RAG application.
-It is kept separate from app.py (the UI) on purpose -- this is good
-practice and something you should mention in interviews: separating
-business logic from the UI layer.
 
-WHAT THIS FILE DOES (the RAG pipeline):
-1. Reads a PDF and pulls out the raw text.
-2. Splits that text into small overlapping "chunks".
-3. Converts each chunk into a vector (a list of numbers that represents
-   its meaning) using Google's Gemini embedding model.
-4. Stores those vectors in ChromaDB, a vector database, so we can
-   search them later by meaning instead of by keyword.
-5. When the user asks a question, it embeds the question the same way,
-   finds the most similar chunks in ChromaDB, and passes those chunks
-   + the question to the Gemini chat model to generate a final answer.
-
-This last step (retrieve relevant chunks, then generate an answer using
-them) is literally what "Retrieval-Augmented Generation" means.
-"""
 
 import os
 from pypdf import PdfReader
@@ -82,21 +61,12 @@ def chunk_text(pages_text, chunk_size=1000, chunk_overlap=150):
 # STEP 3 + 4: Embed the chunks and store them in ChromaDB
 # ---------------------------------------------------------------------
 def get_embeddings_model():
-    """
-    Returns Google's Gemini embedding model. This turns text into a
-    vector of numbers that captures its *meaning*, so two pieces of
-    text with similar meaning end up with similar vectors -- even if
-    they don't share the same words.
-    """
+
     return GoogleGenerativeAIEmbeddings(model="models/gemini-embedding-001")
 
 
 def build_vectorstore(documents, persist_directory=None, collection_name=None):
-    """
-    Embeds every document chunk and stores the vectors in FAISS.
-    FAISS (Facebook AI Similarity Search) is a fast, reliable vector
-    store that runs entirely in memory — no database setup needed.
-    """
+    
     import time
     embeddings = get_embeddings_model()
 
@@ -117,9 +87,7 @@ def build_vectorstore(documents, persist_directory=None, collection_name=None):
 
 
 def format_docs(docs):
-    """Joins retrieved chunks into a single text block for the prompt,
-    and labels each one with its source page so answers can be traced
-    back to the document."""
+
     return "\n\n".join(
         f"[Page {d.metadata.get('page', '?')}]\n{d.page_content}" for d in docs
     )
@@ -130,7 +98,7 @@ def format_docs(docs):
 RAG_PROMPT = ChatPromptTemplate.from_template(
     """You are a helpful assistant answering questions about a document.
 Use ONLY the context below to answer the question. If the answer isn't
-in the context, say you don't know based on the document -- do not make
+in the context, say you don't know based on the document- do not make
 up information.
 
 Context:
@@ -144,25 +112,12 @@ Answer clearly and concisely:"""
 
 
 def get_llm():
-    """
-    Returns the Gemini chat model that generates the final answer.
-    gemini-2.5-flash is fast, free-tier friendly, and great for RAG.
-    """
+    
     return ChatGoogleGenerativeAI(model="gemini-2.5-flash", temperature=0.2)
 
 
 def build_rag_chain(vectorstore):
-    """
-    Builds the full RAG chain using LCEL (LangChain Expression Language),
-    the modern way to compose LangChain pipelines with the `|` operator.
-
-    The chain does this, in order:
-      1. retriever -> finds the top-k most relevant chunks for the question
-      2. format_docs -> turns those chunks into one text block
-      3. RAG_PROMPT -> inserts {context} and {question} into the prompt
-      4. llm -> Gemini generates the answer
-      5. StrOutputParser -> extracts plain text from the model's response
-    """
+    
     retriever = vectorstore.as_retriever(search_kwargs={"k": 4})
     llm = get_llm()
 
@@ -176,11 +131,7 @@ def build_rag_chain(vectorstore):
 
 
 def answer_question(rag_chain, retriever, question):
-    """
-    Runs the chain to get an answer, and separately fetches the source
-    chunks so the UI can show "here's where this answer came from" --
-    a nice touch that makes the app feel trustworthy.
-    """
+    
     answer = rag_chain.invoke(question)
     sources = retriever.invoke(question)
     return answer, sources
